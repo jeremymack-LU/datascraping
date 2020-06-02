@@ -102,4 +102,4 @@ Data scraping in R can be broken down into four basic steps:
  
 ---
 
-<iframe width="750" height="500" src="https://www.youtube.com/embed/KAqxWsE29_c" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+<iframe width="750" height="500" src="https://www.youtube.com/embed/KAqxWsE29_c?VQ=HD1080" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
