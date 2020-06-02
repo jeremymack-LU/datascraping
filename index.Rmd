@@ -1,0 +1,105 @@
+---
+title: "Data Scraping with R"
+subtitle: "An example using COVID-19 data"
+author: "Jeremy Mack"
+institute: "Lehigh University"
+date: "2020/02/28"
+output:
+  xaringan::moon_reader:
+    css: ["custom.css", "default-fonts.css"]
+    seal: false
+    lib_dir: libs
+    nature:
+      highlightStyle: github
+      highlightLines: true
+      countIncrementalSlides: false
+      slideNumberFormat: "%current%"
+---
+class: center, middle, inverse, title-slide
+
+## R Tutorial: data scraping
+#### Jeremy Mack
+#### Lehigh University - Digital Scholarship Team
+#### June 2, 2020
+<br/><br/>
+<br/><br/>
+<br/><br/>
+<br/><br/>
+
+---
+### About this tutorial
+
+ * This tutorial will focus on using R for **data scraping**.
+ 
+--
+ 
+ * An example will be presented that uses R to extract COVID-19 data from a daily report issued by the PA Department of Health.
+ 
+---
+class: center, middle, inverse
+
+#### What is data scraping?
+<br/><br/>
+<br/><br/>
+<br/><br/>
+<br/><br/>
+<br/><br/>
+<br/><br/>
+
+---
+#### Data scraping
+
+ * Data scraping is a technique in which a computer program extracts data from human-readable output coming from another program.
+ 
+--
+
+ * One form of data scraping is referred to as **web scraping**.
+
+--
+ 
+ * Web scraping uses tools to extract data from a web page by accessing its text-based mark-up language (i.e., HTML and XHTML).
+
+---
+class: center, middle, inverse
+
+#### Data scraping in R
+<br/><br/>
+<br/><br/>
+<br/><br/>
+<br/><br/>
+<br/><br/>
+<br/><br/>
+
+---
+#### Data scraping in R
+
+.pull-right2[
+<center><img src="./images/rvest.png" alt="RStudio" height=350/></center>]
+
+.pull-left2[
+Data scraping in R can be broken down into four basic steps:
+{{content}}]
+
+--
+
+ 1. Identify website XPath
+ {{content}}
+ 
+--
+
+ 2. Extract data using **rvest** package
+ {{content}}
+ 
+--
+ 
+ 3. Create data frame
+ {{content}}
+ 
+--
+  
+ 4. Export data frame
+ {{content}}
+ 
+---
+
+<iframe width="560" height="315" src="https://youtu.be/YIIXt8CEmNE" frameborder="0" allowfullscreen></iframe>
