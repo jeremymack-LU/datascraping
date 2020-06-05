@@ -26,6 +26,11 @@ class: center, middle, inverse, title-slide
 --
  
  * It uses an example of extracting COVID-19 data from the daily report issued by the PA Department of Health.
+
+--
+
+ * Slides from an intro course on **Programming in R: a brief introduction**,
+ can be found on [Github](https://jeremymack-lu.github.io/rprog/).
  
 ---
 class: center, middle, inverse
@@ -39,7 +44,7 @@ class: center, middle, inverse
 &lt;br/&gt;&lt;br/&gt;
 
 ---
-#### Data scraping
+#### What is data scraping?
 
 &lt;center&gt;&lt;img src="./images/webscrape1.png" alt="RStudio" height=175/&gt;&lt;/center&gt;
 
@@ -50,7 +55,7 @@ class: center, middle, inverse
  * One form of data scraping is referred to as **web scraping**.
 
 ---
-#### Data scraping
+#### What is data scraping?
 
 &lt;center&gt;&lt;img src="./images/webscrape2.png" alt="RStudio" height=175/&gt;&lt;/center&gt;
 
@@ -62,7 +67,7 @@ class: center, middle, inverse
  
 --
  
- * In other words, we are taking existing **HTML data**, using a web scraper (**R**) to identify the data, and convert it into a useful format (**.txt file**).
+ * In this tutorial, we'll extract existing **HTML data**, using a web scraper (**R**), and convert it into a useful format (**.txt file**).
 
 ---
 class: center, middle, inverse
@@ -103,7 +108,7 @@ Data scraping in R can be broken down into three basic steps:
 ---
 class: center, middle, inverse
 
-#### Step 1: Data scraping in R
+#### Step 1: Identify website XPath
 &lt;br/&gt;&lt;br/&gt;
 &lt;br/&gt;&lt;br/&gt;
 &lt;br/&gt;&lt;br/&gt;
@@ -129,23 +134,24 @@ class: center, middle, inverse
 ---
 #### Step 1: Identify website XPath
 
-.pull-right2[
+.pull-right4[
 &lt;center&gt;&lt;img src="./images/xpath2.png" alt="RStudio" width=400/&gt;&lt;/center&gt;
-&lt;br/&gt;&lt;br/&gt;
+&lt;br/&gt;
 &lt;center&gt;&lt;img src="./images/xpath3.png" alt="RStudio" width=400/&gt;&lt;/center&gt;
-
 ]
 
-.pull-left2[Basic steps to identify an XPath:
- 
- 1. Open web page in Google Chrome.
-  
- 2. Right click on the item you're interested in scraping and click **Inspect**.
-  
- 3. In the **Elements portion Inspector window**, mouse over each line until the entire talbe is highlighted.
-  
- 4. Right click on the line, click **Copy**, and then click **Copy XPath**
-  ]
+.pull-left4[
+Basic steps to identify an XPath:
+(video on next slide)
+
+  1. Open web page in Google Chrome. 
+
+  2. Right click on the item you're interested in scraping and click **Inspect**. 
+
+  3. In the **Elements portion Inspector window**, mouse over each line until the entire table is highlighted. 
+
+  4. Right click on the line, click **Copy**, and then click **Copy XPath**. 
+]
 
 ---
 #### Step 1: Identify website XPath
@@ -175,7 +181,7 @@ library(rvest)     # Additional Tidyverse packages for web scraping
 library(xml2)      # Package to work with XML files
 ```
 
-* Set urls for PA Deparment of Health web pages (cases and deaths)
+* Set urls for PA Department of Health web pages (cases and deaths)
 
 ```r
 url1 &lt;- "https://www.health.pa.gov/topics/disease/coronavirus/Pages/Cases.aspx"
@@ -205,18 +211,18 @@ cases &lt;- cases[[1]]              # Select table number
 cases &lt;- cases[-1,]              # Remove first row, which contains table headers
 cases &lt;- cases[,c(1:2)]          # Select column for County and Cases
 names(cases) &lt;- c("County",
-                  "Covid_cases") # Add column names
+                  "Cases")       # Add column names
 
-head(cases, 5)
+head(cases, 5)                   # View first five rows of data frame
 ```
 
 ```
-##      County Covid_cases
-## 2     Adams         263
-## 3 Allegheny        1965
-## 4 Armstrong          64
-## 5    Beaver         599
-## 6   Bedford          42
+##      County Cases
+## 2     Adams   264
+## 3 Allegheny  1973
+## 4 Armstrong    64
+## 5    Beaver   598
+## 6   Bedford    43
 ```
 ]
 
@@ -235,19 +241,19 @@ deaths&lt;- deaths[[1]]               # Select table number
 deaths&lt;- deaths[-1,]               # Remove first row, which contains table headers
 deaths &lt;- deaths[,c(1:2)]          # Select column for County and Deaths
 names(deaths) &lt;- c("County",
-                   "Covid_deaths") # Add column names
+                   "Deaths")       # Add column names
 deaths[35,1] &lt;- "McKean"           # Fix name for McKean County (not Mckean)
 
-head(deaths, 5)
+head(deaths, 5)                    # View first five rows of data frame
 ```
 
 ```
-##      County Covid_deaths
-## 2     Adams            8
-## 3 Allegheny          166
-## 4 Armstrong            5
-## 5    Beaver           74
-## 6   Bedford            2
+##      County Deaths
+## 2     Adams      8
+## 3 Allegheny    168
+## 4 Armstrong      5
+## 5    Beaver     74
+## 6   Bedford      2
 ```
 ]
 
@@ -269,24 +275,24 @@ class: center, middle, inverse
 * Merge both data frames
 
 ```r
-df &lt;- merge(cases, deaths, by="County", all.x=TRUE) # Merge by County
+df &lt;- merge(cases, deaths, by="County", all.x=TRUE)    # Merge by County
 
-df &lt;- df %&gt;%                                        # Set data structure for variables
-  mutate(County=as.factor(County),
-         Covid_cases=as.numeric(Covid_cases),
-         Covid_deaths=as.numeric(gsub(",","",Covid_deaths))) %&gt;%
-  mutate(Covid_deaths=ifelse(is.na(Covid_deaths),0,Covid_deaths))
+df &lt;- df %&gt;%                                           # Set data structure for variables
+  mutate(County=as.factor(County),                     # Set County to factor
+         Cases=as.numeric(Cases),                      # Set Cases to numeric
+         Deaths=as.numeric(gsub(",","", Deaths))) %&gt;%  # Set Deaths to numeric
+  mutate(Deaths=ifelse(is.na(Deaths),0, Deaths))       # Change NAs to 0
 
-head(df, 5)
+head(df, 5)                                            # View first five rows of data frame
 ```
 
 ```
-##      County Covid_cases Covid_deaths
-## 1     Adams         263            8
-## 2 Allegheny        1965          166
-## 3 Armstrong          64            5
-## 4    Beaver         599           74
-## 5   Bedford          42            2
+##      County Cases Deaths
+## 1     Adams   264      8
+## 2 Allegheny  1973    168
+## 3 Armstrong    64      5
+## 4    Beaver   598     74
+## 5   Bedford    43      2
 ```
 ]
 
@@ -303,7 +309,7 @@ write.table(df,
             row.names=FALSE)
 ```
 
-* Note, you'll need to change *"/Users/jeremymack/Desktop/"* in the above filepath, to your own working directory.
+* Note, you'll need to change &lt;font size="3" color="red"&gt;"/Users/jeremymack/Desktop/"&lt;/font&gt; in the above filepath, to your own working directory.
 ]
     </textarea>
 <style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>

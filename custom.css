@@ -109,3 +109,12 @@ th, td { padding: 5px; }
 .tiny2 .remark-code { /*Change made here*/
   font-size: 55% !important;
 }
+
+.pull-left4 {
+  float: left;
+  width: 44%;
+}
+.pull-right4 {
+  float: right;
+  width: 50%;
+}
