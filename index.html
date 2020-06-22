@@ -15,8 +15,9 @@ class: center, middle, inverse, title-slide
 ## R tutorial: data scraping
 #### Jeremy Mack
 #### Lehigh University - Digital Scholarship Team
+&lt;br/&gt;
 &lt;center&gt;&lt;img src="./images/webscrape4.png" alt="RStudio" height=150/&gt;&lt;/center&gt;
-&lt;br/&gt;&lt;br/&gt;
+&lt;br/&gt;&lt;br/&gt;&lt;br/&gt;
 
 ---
 ### About this tutorial
@@ -25,11 +26,11 @@ class: center, middle, inverse, title-slide
  
 --
  
- * It uses an example of extracting COVID-19 data from the daily report issued by the PA Department of Health.
+ * It uses an example of extracting COVID-19 data from daily reports issued by the [PA Department of Health](https://www.health.pa.gov/topics/disease/coronavirus/Pages/Coronavirus.aspx).
 
 --
 
- * Slides from an intro course on **Programming in R: a brief introduction**,
+ * Slides from an intro course on **Programming in R**,
  can be found on [Github](https://jeremymack-lu.github.io/rprog/).
  
 ---
@@ -52,7 +53,7 @@ class: center, middle, inverse
  
 --
 
- * One form of data scraping is referred to as **web scraping**.
+ * Two forms of data scraping include **web scraping** and **document scraping**.
 
 ---
 #### What is data scraping?
@@ -61,18 +62,22 @@ class: center, middle, inverse
 
  * **Data scraping** is a technique in which a computer program extracts data from human-readable output coming from another program.
 
- * One form of data scraping is referred to as **web scraping**.
+ * Two forms of data scraping include **web scraping** and **document scraping**.
  
- * Web scraping uses tools to extract data from a web page by accessing its **text-based mark-up language** (i.e., HTML and XHTML).
+  1. Web scraping uses tools to extract data from a web page by accessing its **text-based mark-up language** (i.e., HTML and XHTML).
+ 
+--
+
+  2. Document scraping uses tools to extract data from a document file, often one thats **format is less accessible** (i.e., PDF).
  
 --
  
- * In this tutorial, we'll extract existing **HTML data**, using a web scraper (**R**), and convert it into a useful format (**.txt file**).
-
+ * In this tutorial, we'll extract data from both an **HTML and PDF source**, using a data scraper (**R**), and convert it into a useful format (**.txt file**).
+ 
 ---
 class: center, middle, inverse
 
-#### Data scraping in R
+#### Data scraping using R
 &lt;br/&gt;&lt;br/&gt;
 &lt;br/&gt;&lt;br/&gt;
 &lt;br/&gt;&lt;br/&gt;
@@ -81,34 +86,74 @@ class: center, middle, inverse
 &lt;br/&gt;&lt;br/&gt;
 
 ---
-#### Data scraping in R
+#### Data scraping using R
 
 .pull-right2[
-&lt;center&gt;&lt;img src="./images/rvest.png" alt="RStudio" height=350/&gt;&lt;/center&gt;]
+&lt;center&gt;&lt;img src="./images/rvest.png" alt="RStudio" height=150/&gt; &lt;img src="./images/dplyr.png" alt="RStudio" height=150/&gt;&lt;/center&gt;
+&lt;center&gt;&lt;img src="./images/tidyverse.png" alt="RStudio" height=150/&gt;&lt;/center&gt;
+&lt;center&gt;&lt;img src="./images/readr.png" alt="RStudio" height=150/&gt; &lt;img src="./images/stringr.png" alt="RStudio" height=150/&gt;&lt;/center&gt;
+]
 
 .pull-left2[
-Data scraping in R can be broken down into three basic steps:
+Data scraping using R can be broken down into three basic steps:
 {{content}}]
 
 --
 
- 1. Identify website XPath
+ 1. Identify data source
+ 
+  + Web scraping - XPath
+  
+  + Document scraping - file location
  {{content}}
  
 --
 
- 2. Extract data using **rvest** package
+ 2. Extract data in R
  {{content}}
  
 --
  
- 3. Create and export data frame
+ 3. Create and export data frame in R
  {{content}}
+ 
+--
+
+Most of the programming in R will utilize a collection of packages and functions known as the [tidyverse](https://www.tidyverse.org).
 
 ---
 class: center, middle, inverse
 
-#### Step 1: Identify website XPath
+#### Data scraping using R
+Example 1 - Web scraping
+&lt;br/&gt;&lt;br/&gt;
+&lt;br/&gt;&lt;br/&gt;
+&lt;br/&gt;&lt;br/&gt;
+&lt;br/&gt;&lt;br/&gt;
+&lt;br/&gt;&lt;br/&gt;
+
+---
+#### Example 1 - Web scraping
+
+.pull-right2[
+&lt;center&gt;&lt;img src="./images/rvest.png" alt="RStudio" height=150/&gt; &lt;img src="./images/dplyr.png" alt="RStudio" height=150/&gt;&lt;/center&gt;
+&lt;center&gt;&lt;img src="./images/tidyverse.png" alt="RStudio" height=150/&gt;&lt;/center&gt;]
+
+.pull-left2[
+Basic steps:
+ 1. Identify data source
+ 
+  + Web scraping - XPath
+
+ 2. Extract data in R - **revest**
+ 
+ 3. Create and export data frame in R - **dplyr**
+]
+
+---
+class: center, middle, inverse
+
+#### Step 1: Identify data source
 &lt;br/&gt;&lt;br/&gt;
 &lt;br/&gt;&lt;br/&gt;
 &lt;br/&gt;&lt;br/&gt;
@@ -117,7 +162,7 @@ class: center, middle, inverse
 &lt;br/&gt;&lt;br/&gt;
 
 ---
-#### Step 1: Identify website XPath
+#### Step 1: Identify data source
 
 &lt;center&gt;&lt;img src="./images/xpath.png" alt="RStudio" height=175/&gt;&lt;/center&gt;
 
@@ -132,7 +177,7 @@ class: center, middle, inverse
  * We could write our own XPath, but instead, we'll use a browser window, to identify the exact XPath we're interested in.
 
 ---
-#### Step 1: Identify website XPath
+#### Step 1: Identify data source
 
 .pull-right4[
 &lt;center&gt;&lt;img src="./images/xpath2.png" alt="RStudio" width=400/&gt;&lt;/center&gt;
@@ -141,27 +186,35 @@ class: center, middle, inverse
 ]
 
 .pull-left4[
-Basic steps to identify an XPath:
-(video on next slide)
+Basic steps (video on next slide):
 
-  1. Open web page in Google Chrome. 
-
-  2. Right click on the item you're interested in scraping and click **Inspect**. 
-
-  3. In the **Elements portion Inspector window**, mouse over each line until the entire table is highlighted. 
-
-  4. Right click on the line, click **Copy**, and then click **Copy XPath**. 
+  1. Open web page in Google Chrome, or Safari.
+  {{content}}
 ]
 
+--
+
+  2. Right click on the item you're interested in scraping and click **Inspect**.
+  {{content}}
+  
+--
+
+  3. In the **Elements portion of the Inspector window**, mouse over each line until the entire table is highlighted.
+  {{content}}
+  
+--
+
+  4. Right click on the line, click **Copy**, and then click **Copy XPath**.
+
 ---
-#### Step 1: Identify website XPath
+#### Step 1: Identify data source
 
 &lt;iframe width="750" height="500" src="https://www.youtube.com/embed/KAqxWsE29_c?VQ=HD1080" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen&gt;&lt;/iframe&gt;
 
 ---
 class: center, middle, inverse
 
-#### Step 2: Extract data using *rvest* package
+#### Step 2: Extract data in R
 &lt;br/&gt;&lt;br/&gt;
 &lt;br/&gt;&lt;br/&gt;
 &lt;br/&gt;&lt;br/&gt;
@@ -170,64 +223,75 @@ class: center, middle, inverse
 &lt;br/&gt;&lt;br/&gt;
 
 ---
-#### Step 2: Extract data using *rvest* package
+#### Step 2: Extract data in R
 
 .tiny[
 * Load necessary packages
 
 ```r
-library(tidyverse) # Load core Tidyverse packages, includeing dplyr
+library(tidyverse) # Load core Tidyverse packages, including dplyr
 library(rvest)     # Additional Tidyverse packages for web scraping
 library(xml2)      # Package to work with XML files
 ```
+]
 
+--
+
+.tiny[
 * Set urls for PA Department of Health web pages (cases and deaths)
 
 ```r
-url1 &lt;- "https://www.health.pa.gov/topics/disease/coronavirus/Pages/Cases.aspx"
-url2 &lt;- "https://www.health.pa.gov/topics/disease/coronavirus/Pages/Death-Data.aspx"
+url1 &lt;- 'https://www.health.pa.gov/topics/disease/coronavirus/Pages/Archives.aspx'
+url2 &lt;- 'https://www.health.pa.gov/topics/disease/coronavirus/Pages/Death-Data.aspx'
 ```
+]
 
-* Set XPaths to the tables that were copied from each web page
+--
+
+.tiny[
+* Set XPath for web page table(s)
 
 ```r
-xpath1 &lt;- '//*[@id="ctl00_PlaceHolderMain_PageContent__ControlWrapper_RichHtmlField"]/table[5]'
-xpath2 &lt;- '//*[@id="ctl00_PlaceHolderMain_PageContent__ControlWrapper_RichHtmlField"]/table'
+xpath &lt;- '//*[@id="ctl00_PlaceHolderMain_PageContent__ControlWrapper_RichHtmlField"]/table'
 ```
 ]
 
 ---
-#### Step 2: Extract data using *rvest* package
-
+#### Step 2: Extract data in R
 .tiny[
 * Scrape and create data frame for COVID-19 case data
 
 ```r
 cases &lt;- url1 %&gt;%                # Scrape data
   read_html() %&gt;%
-  html_nodes(xpath=xpath1) %&gt;%
+  html_nodes(xpath=xpath) %&gt;%
   html_table()
-cases &lt;- cases[[1]]              # Select table number
+cases &lt;- cases[[8]]              # Select table number
 cases &lt;- cases[-1,]              # Remove first row, which contains table headers
 cases &lt;- cases[,c(1:2)]          # Select column for County and Cases
 names(cases) &lt;- c("County",
                   "Cases")       # Add column names
 
-head(cases, 5)                   # View first five rows of data frame
+head(cases, 10)                  # View first five rows of data frame
 ```
 
 ```
-##      County Cases
-## 2     Adams   264
-## 3 Allegheny  1973
-## 4 Armstrong    64
-## 5    Beaver   598
-## 6   Bedford    43
+##       County Cases
+## 2      Adams   273
+## 3  Allegheny  2003
+## 4  Armstrong    65
+## 5     Beaver   603
+## 6    Bedford    44
+## 7      Berks  4201
+## 8      Blair    53
+## 9   Bradford    46
+## 10     Bucks  5261
+## 11    Butler   247
 ```
 ]
 
 ---
-#### Step 2: Extract data using *rvest* package
+#### Step 2: Extract data in R
 
 .tiny[
 * Scrape and create data frame for COVID-19 death data
@@ -235,32 +299,37 @@ head(cases, 5)                   # View first five rows of data frame
 ```r
 deaths &lt;- url2 %&gt;%                 # Scrape data
   read_html() %&gt;%
-  html_nodes(xpath=xpath2) %&gt;%
+  html_nodes(xpath=xpath) %&gt;%
   html_table()
-deaths&lt;- deaths[[1]]               # Select table number
-deaths&lt;- deaths[-1,]               # Remove first row, which contains table headers
+deaths &lt;- deaths[[1]]              # Select table number
+deaths &lt;- deaths[-1,]              # Remove first row, which contains table headers
 deaths &lt;- deaths[,c(1:2)]          # Select column for County and Deaths
 names(deaths) &lt;- c("County",
                    "Deaths")       # Add column names
 deaths[35,1] &lt;- "McKean"           # Fix name for McKean County (not Mckean)
 
-head(deaths, 5)                    # View first five rows of data frame
+head(deaths, 10)                   # View first 10 rows of data frame
 ```
 
 ```
-##      County Deaths
-## 2     Adams      8
-## 3 Allegheny    168
-## 4 Armstrong      5
-## 5    Beaver     74
-## 6   Bedford      2
+##       County Deaths
+## 2      Adams      8
+## 3  Allegheny    168
+## 4  Armstrong      5
+## 5     Beaver     74
+## 6    Bedford      2
+## 7      Berks    333
+## 8      Blair      1
+## 9   Bradford      3
+## 10     Bucks    529
+## 11    Butler     12
 ```
 ]
 
 ---
 class: center, middle, inverse
 
-#### Step 3: Create and export data frame
+#### Step 3: Create and export data frame in R
 &lt;br/&gt;&lt;br/&gt;
 &lt;br/&gt;&lt;br/&gt;
 &lt;br/&gt;&lt;br/&gt;
@@ -269,10 +338,10 @@ class: center, middle, inverse
 &lt;br/&gt;&lt;br/&gt;
 
 ---
-#### Step 3: Create and export data frame
+#### Step 3: Create and export data frame in R
 
 .tiny[
-* Merge both data frames
+* Merge both data frames and add today's date
 
 ```r
 df &lt;- merge(cases, deaths, by="County", all.x=TRUE)    # Merge by County
@@ -283,24 +352,30 @@ df &lt;- df %&gt;%                                           # Set data structur
          Deaths=as.numeric(gsub(",","", Deaths))) %&gt;%  # Set Deaths to numeric
   mutate(Deaths=ifelse(is.na(Deaths),0, Deaths))       # Change NAs to 0
 
-head(df, 5)                                            # View first five rows of data frame
+head(df, 10)                                           # View first 10 rows of data frame
 ```
 
 ```
-##      County Cases Deaths
-## 1     Adams   264      8
-## 2 Allegheny  1973    168
-## 3 Armstrong    64      5
-## 4    Beaver   598     74
-## 5   Bedford    43      2
+##       County Cases Deaths
+## 1      Adams   273      8
+## 2  Allegheny  2003    168
+## 3  Armstrong    65      5
+## 4     Beaver   603     74
+## 5    Bedford    44      2
+## 6      Berks  4201    333
+## 7      Blair    53      1
+## 8   Bradford    46      3
+## 9      Bucks  5261    529
+## 10    Butler   247     12
 ```
+
 ]
 
 ---
-#### Step 3: Create and export data frame
+#### Step 3: Create and export data frame in R
 
 .tiny[
-* Export to text file
+ * Export to text file
 
 ```r
 write.table(df,
@@ -309,8 +384,275 @@ write.table(df,
             row.names=FALSE)
 ```
 
-* Note, you'll need to change &lt;font size="3" color="red"&gt;"/Users/jeremymack/Desktop/"&lt;/font&gt; in the above filepath, to your own working directory.
+ * Note, you'll need to change &lt;font size="3" color="red"&gt;"/Users/jeremymack/Desktop/"&lt;/font&gt; in the above filepath, to your own working directory.
+
 ]
+
+---
+class: center, middle, inverse
+
+#### Data scraping using R
+Example 2 - Document scraping
+&lt;br/&gt;&lt;br/&gt;
+&lt;br/&gt;&lt;br/&gt;
+&lt;br/&gt;&lt;br/&gt;
+&lt;br/&gt;&lt;br/&gt;
+&lt;br/&gt;&lt;br/&gt;
+
+---
+#### Example 2 - Document scraping
+
+&lt;center&gt;&lt;img src="./images/webscrape2.png" alt="RStudio" height=175/&gt;&lt;/center&gt;
+
+ * On June 7, PA Department of Health changed their method of reporting data.
+ 
+--
+ 
+ * Reporting moved from an HTML-based table to a PDF document.
+ 
+--
+ 
+ * Data scraping methods are (**and need to be**) flexible!
+
+---
+#### Example 2 - Document scraping
+
+.pull-right2[
+&lt;center&gt;&lt;img src="./images/rvest.png" alt="RStudio" height=150/&gt; &lt;img src="./images/dplyr.png" alt="RStudio" height=150/&gt;&lt;/center&gt;
+&lt;center&gt;&lt;img src="./images/tidyverse.png" alt="RStudio" height=150/&gt;&lt;/center&gt;
+&lt;center&gt;&lt;img src="./images/readr.png" alt="RStudio" height=150/&gt; &lt;img src="./images/stringr.png" alt="RStudio" height=150/&gt;&lt;/center&gt;]
+
+.pull-left2[
+Basic steps:
+ 1. Identify data source
+ 
+  + Document scraping - file location
+
+ 2. Extract data in R - **rvest**, **stringr**, **readr**
+ 
+ 3. Create and export data frame in R - **dplyr**
+]
+
+---
+class: center, middle, inverse
+
+#### Step 1: Identify data source
+&lt;br/&gt;&lt;br/&gt;
+&lt;br/&gt;&lt;br/&gt;
+&lt;br/&gt;&lt;br/&gt;
+&lt;br/&gt;&lt;br/&gt;
+&lt;br/&gt;&lt;br/&gt;
+&lt;br/&gt;&lt;br/&gt;
+
+---
+#### Step 1: Identify data source
+
+.tiny[
+* Load necessary packages
+
+```r
+library(tidyverse) # Load core Tidyverse packages, including dplyr
+library(rvest)     # Additional Tidyverse package for web scraping
+library(readr)     # Additional Tidyverse package for reading table data
+library(pdftools)  # Package to work with PDF files
+```
+]
+
+--
+
+.tiny[
+* Set url for PA Department of Health web page
+
+```r
+page &lt;- read_html("https://www.health.pa.gov/topics/disease/coronavirus/Pages/Cases.aspx")
+```
+]
+
+--
+
+.tiny[
+* Identify PDF links on page and set urls for data tables (cases and deaths)
+
+```r
+raw_list &lt;- page %&gt;%      # Use url set as "page"
+  html_nodes("a") %&gt;%     # Identify attributes on the page w/ css selector "a"
+  html_attr("href") %&gt;%   # Identify "href" attributes (i.e., link destination)
+  str_subset("\\.pdf")    # Subset "href" attributes that end in .pdf
+raw_list
+```
+]
+
+.tiny2[
+
+```
+[1] "/topics/Documents/Diseases%20and%20Conditions/COVID-19%20County%20Data/County%20Case%20Counts_6-19-2020.pdf"                     
+[2] "/topics/Documents/Diseases%20and%20Conditions/COVID-19%20Death%20Data/Death%20by%20County%20of%20Residence%20--%202020-06-19.pdf"
+```
+]
+
+.tiny[
+
+```r
+url1 &lt;- paste("https://www.health.pa.gov", raw_list[1], sep="")
+url2 &lt;- paste("https://www.health.pa.gov", raw_list[2], sep="")
+```
+]
+
+---
+class: center, middle, inverse
+
+#### Step 2: Extract data in R
+&lt;br/&gt;&lt;br/&gt;
+&lt;br/&gt;&lt;br/&gt;
+&lt;br/&gt;&lt;br/&gt;
+&lt;br/&gt;&lt;br/&gt;
+&lt;br/&gt;&lt;br/&gt;
+&lt;br/&gt;&lt;br/&gt;
+
+---
+#### Step 2: Extract data in R
+.tiny[
+* Scrape and create data frame for COVID-19 case data
+
+```r
+pdf1 &lt;- pdf_text(url1) %&gt;%  # Select the linked PDF with case data
+  read_lines()              # Read lines into a list of vectors
+
+cases &lt;- pdf1 %&gt;%             # Select the list of vectors
+  str_squish() %&gt;%          # Remove extra whitespace between elements
+  str_split(pattern=" ")    # Split vector string into pieces (i.e., columns)
+
+cases &lt;- do.call(rbind,
+               Filter(function(x) length(x)==6, cases))  # Combine list elements with 6 items
+
+cases &lt;- cases %&gt;%
+  as.data.frame() %&gt;%                         # Convert to a data frame
+  mutate(County=as.factor(V1),                # Set County to factor
+         Cases=as.numeric(as.character(V3))) %&gt;%            # Set Cases to numeric
+  mutate(County=str_to_sentence(County)) %&gt;%  # Change County from all caps
+  select(7:8)
+
+head(cases, 5)  # View first 5 rows of data frame
+```
+
+```
+##      County Cases
+## 1     Adams   309
+## 2 Allegheny  2139
+## 3 Armstrong    69
+## 4    Beaver   619
+## 5   Bedford    63
+```
+]
+
+---
+#### Step 2: Extract data in R
+.tiny[
+* Scrape and create data frame for COVID-19 death data
+
+```r
+pdf2 &lt;- pdf_text(url2) %&gt;%  # Select the linked PDF with case data
+  read_lines()              # Read lines into a list of vectors
+
+deaths &lt;- pdf2 %&gt;%             # Select the list of vectors
+  str_squish() %&gt;%          # Remove extra whitespace between elements
+  str_split(pattern=" ")    # Split vector string into pieces (i.e., columns)
+
+deaths &lt;- do.call(rbind,
+               Filter(function(x) length(x)==3, deaths))  # Combine list elements with 3 items
+
+deaths &lt;- deaths %&gt;%
+  as.data.frame() %&gt;%                         # Convert to a data frame
+  mutate(County=as.factor(V1),                # Set County to factor
+         Deaths=as.numeric(V2)) %&gt;%           # Set Cases to numeric
+  select(4:5)
+
+head(deaths, 5)  # View first 5 rows of data frame
+```
+
+```
+##      County Deaths
+## 1     Adams      3
+## 2 Allegheny      8
+## 3 Armstrong     29
+## 4    Beaver     33
+## 5   Bedford     10
+```
+]
+
+---
+class: center, middle, inverse
+
+#### Step 3: Create and export data frame in R
+&lt;br/&gt;&lt;br/&gt;
+&lt;br/&gt;&lt;br/&gt;
+&lt;br/&gt;&lt;br/&gt;
+&lt;br/&gt;&lt;br/&gt;
+&lt;br/&gt;&lt;br/&gt;
+&lt;br/&gt;&lt;br/&gt;
+
+---
+#### Step 3: Create and export data frame in R
+
+.tiny[
+* Merge both data frames and add today's date
+
+```r
+df &lt;- merge(cases, deaths, by="County", all.x=TRUE)    # Merge by County
+
+df &lt;- df %&gt;%                                           # Set data structure for variables
+  mutate(County=as.factor(County),                     # Set County to factor
+         Cases=as.numeric(Cases),                      # Set Cases to numeric
+         Deaths=as.numeric(gsub(",","", Deaths))) %&gt;%  # Set Deaths to numeric
+  mutate(Deaths=ifelse(is.na(Deaths),0, Deaths))       # Change NAs to 0
+
+head(df, 10)                                           # View first 10 rows of data frame
+```
+
+```
+##       County Cases Deaths
+## 1      Adams   309      3
+## 2  Allegheny  2139      8
+## 3  Armstrong    69     29
+## 4     Beaver   619     33
+## 5    Bedford    63     10
+## 6      Berks  4374     19
+## 7      Blair    56      1
+## 8   Bradford    49     16
+## 9      Bucks  5510     28
+## 10    Butler   263      5
+```
+
+]
+
+---
+#### Step 3: Create and export data frame in R
+
+.tiny[
+ * Export to text file
+
+```r
+write.table(df,
+            "/Users/jeremymack/Desktop/COVID19_data.txt",
+            sep=",",
+            row.names=FALSE)
+```
+
+ * Note, you'll need to change &lt;font size="3" color="red"&gt;"/Users/jeremymack/Desktop/"&lt;/font&gt; in the above filepath, to your own working directory.
+
+]
+
+---
+class: center, middle, inverse
+#### Data scraping using R
+
+
+
+
+
+&lt;img src="./images/PA_county_cases.jpeg" alt="RStudio" height=250/&gt;
+
+&lt;img src="./images/PA_LV_cases.jpeg" alt="RStudio" height=250/&gt;
     </textarea>
 <style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>
 <script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>
