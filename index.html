@@ -32,6 +32,13 @@ class: center, middle, inverse, title-slide
 
  * Slides from an intro course on **Programming in R**,
  can be found on [Github](https://jeremymack-lu.github.io/rprog/).
+  + Topics of interest include:
+    
+     - Topic 3 - [Getting started with R and R Studio](https://jeremymack-lu.github.io/rprog/#20)
+    
+     - Topic 4 - [Installing functions in R](https://jeremymack-lu.github.io/rprog/#72)
+    
+     - Topic 5 - [Working with data in R](https://jeremymack-lu.github.io/rprog/#83)
  
 ---
 class: center, middle, inverse
@@ -485,8 +492,8 @@ raw_list
 .tiny2[
 
 ```
-[1] "/topics/Documents/Diseases%20and%20Conditions/COVID-19%20County%20Data/County%20Case%20Counts_6-19-2020.pdf"                     
-[2] "/topics/Documents/Diseases%20and%20Conditions/COVID-19%20Death%20Data/Death%20by%20County%20of%20Residence%20--%202020-06-19.pdf"
+[1] "/topics/Documents/Diseases%20and%20Conditions/COVID-19%20County%20Data/County%20Case%20Counts_6-24-2020.pdf"                     
+[2] "/topics/Documents/Diseases%20and%20Conditions/COVID-19%20Death%20Data/Death%20by%20County%20of%20Residence%20--%202020-06-24.pdf"
 ```
 ]
 
@@ -518,18 +525,19 @@ class: center, middle, inverse
 pdf1 &lt;- pdf_text(url1) %&gt;%  # Select the linked PDF with case data
   read_lines()              # Read lines into a list of vectors
 
-cases &lt;- pdf1 %&gt;%             # Select the list of vectors
+cases &lt;- pdf1 %&gt;%           # Select the list of vectors
   str_squish() %&gt;%          # Remove extra whitespace between elements
   str_split(pattern=" ")    # Split vector string into pieces (i.e., columns)
 
 cases &lt;- do.call(rbind,
                Filter(function(x) length(x)==6, cases))  # Combine list elements with 6 items
+cases &lt;- cases[-1,]                                      # Remove first row
 
 cases &lt;- cases %&gt;%
-  as.data.frame() %&gt;%                         # Convert to a data frame
-  mutate(County=as.factor(V1),                # Set County to factor
-         Cases=as.numeric(as.character(V3))) %&gt;%            # Set Cases to numeric
-  mutate(County=str_to_sentence(County)) %&gt;%  # Change County from all caps
+  as.data.frame() %&gt;%                             # Convert to a data frame
+  mutate(County=as.factor(V1),                    # Set County to factor
+         Cases=as.numeric(as.character(V3))) %&gt;%  # Set Cases to numeric
+  mutate(County=str_to_sentence(County)) %&gt;%      # Change County from all caps
   select(7:8)
 
 head(cases, 5)  # View first 5 rows of data frame
@@ -537,11 +545,11 @@ head(cases, 5)  # View first 5 rows of data frame
 
 ```
 ##      County Cases
-## 1     Adams   309
-## 2 Allegheny  2139
-## 3 Armstrong    69
-## 4    Beaver   619
-## 5   Bedford    63
+## 1     Adams   321
+## 2 Allegheny  2284
+## 3 Armstrong    70
+## 4    Beaver   634
+## 5   Bedford    71
 ```
 ]
 
@@ -559,13 +567,13 @@ deaths &lt;- pdf2 %&gt;%             # Select the list of vectors
   str_split(pattern=" ")    # Split vector string into pieces (i.e., columns)
 
 deaths &lt;- do.call(rbind,
-               Filter(function(x) length(x)==3, deaths))  # Combine list elements with 3 items
+               Filter(function(x) length(x)==4, deaths))  # Combine list elements with 3 items
 
 deaths &lt;- deaths %&gt;%
   as.data.frame() %&gt;%                         # Convert to a data frame
   mutate(County=as.factor(V1),                # Set County to factor
          Deaths=as.numeric(V2)) %&gt;%           # Set Cases to numeric
-  select(4:5)
+  select(5:6)
 
 head(deaths, 5)  # View first 5 rows of data frame
 ```
@@ -611,16 +619,16 @@ head(df, 10)                                           # View first 10 rows of d
 
 ```
 ##       County Cases Deaths
-## 1      Adams   309      3
-## 2  Allegheny  2139      8
-## 3  Armstrong    69     29
-## 4     Beaver   619     33
-## 5    Bedford    63     10
-## 6      Berks  4374     19
-## 7      Blair    56      1
-## 8   Bradford    49     16
-## 9      Bucks  5510     28
-## 10    Butler   263      5
+## 1      Adams   321      3
+## 2  Allegheny  2284      8
+## 3  Armstrong    70     29
+## 4     Beaver   634     33
+## 5    Bedford    71     10
+## 6      Berks  4453     20
+## 7      Blair    69      1
+## 8   Bradford    51     17
+## 9      Bucks  5619     28
+## 10    Butler   277      5
 ```
 
 ]

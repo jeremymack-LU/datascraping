@@ -37,6 +37,13 @@ class: center, middle, inverse, title-slide
 
  * Slides from an intro course on **Programming in R**,
  can be found on [Github](https://jeremymack-lu.github.io/rprog/).
+  + Topics of interest include:
+    
+     - Topic 3 - [Getting started with R and R Studio](https://jeremymack-lu.github.io/rprog/#20)
+    
+     - Topic 4 - [Installing functions in R](https://jeremymack-lu.github.io/rprog/#72)
+    
+     - Topic 5 - [Working with data in R](https://jeremymack-lu.github.io/rprog/#83)
  
 ---
 class: center, middle, inverse
@@ -471,18 +478,19 @@ class: center, middle, inverse
 pdf1 <- pdf_text(url1) %>%  # Select the linked PDF with case data
   read_lines()              # Read lines into a list of vectors
 
-cases <- pdf1 %>%             # Select the list of vectors
+cases <- pdf1 %>%           # Select the list of vectors
   str_squish() %>%          # Remove extra whitespace between elements
   str_split(pattern=" ")    # Split vector string into pieces (i.e., columns)
 
 cases <- do.call(rbind,
                Filter(function(x) length(x)==6, cases))  # Combine list elements with 6 items
+cases <- cases[-1,]                                      # Remove first row
 
 cases <- cases %>%
-  as.data.frame() %>%                         # Convert to a data frame
-  mutate(County=as.factor(V1),                # Set County to factor
-         Cases=as.numeric(as.character(V3))) %>%            # Set Cases to numeric
-  mutate(County=str_to_sentence(County)) %>%  # Change County from all caps
+  as.data.frame() %>%                             # Convert to a data frame
+  mutate(County=as.factor(V1),                    # Set County to factor
+         Cases=as.numeric(as.character(V3))) %>%  # Set Cases to numeric
+  mutate(County=str_to_sentence(County)) %>%      # Change County from all caps
   select(7:8)
 
 head(cases, 5)  # View first 5 rows of data frame
@@ -502,13 +510,13 @@ deaths <- pdf2 %>%             # Select the list of vectors
   str_split(pattern=" ")    # Split vector string into pieces (i.e., columns)
 
 deaths <- do.call(rbind,
-               Filter(function(x) length(x)==3, deaths))  # Combine list elements with 3 items
+               Filter(function(x) length(x)==4, deaths))  # Combine list elements with 3 items
 
 deaths <- deaths %>%
   as.data.frame() %>%                         # Convert to a data frame
   mutate(County=as.factor(V1),                # Set County to factor
          Deaths=as.numeric(V2)) %>%           # Set Cases to numeric
-  select(4:5)
+  select(5:6)
 
 head(deaths, 5)  # View first 5 rows of data frame
 ```
