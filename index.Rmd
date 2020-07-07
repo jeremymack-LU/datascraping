@@ -251,17 +251,18 @@ library(xml2)      # Package to work with XML files
 .tiny[
 * Set urls for PA Department of Health web pages (cases and deaths)
 ```{r warning=FALSE, message=FALSE}
-url1 <- 'https://www.health.pa.gov/topics/disease/coronavirus/Pages/Archives.aspx'
+url1 <- 'https://www.health.pa.gov/topics/disease/coronavirus/Pages/June-Archive.aspx'
 url2 <- 'https://www.health.pa.gov/topics/disease/coronavirus/Pages/Death-Data.aspx'
 ```
 ]
 
 --
 
-.tiny[
+.tiny3[
 * Set XPath for web page table(s)
 ```{r warning=FALSE, message=FALSE}
-xpath <- '//*[@id="ctl00_PlaceHolderMain_PageContent__ControlWrapper_RichHtmlField"]/table'
+xpath1 <- '//*[@id="ctl00_PlaceHolderMain_PageContent__ControlWrapper_RichHtmlField"]/span/table'
+xpath2 <- '//*[@id="ctl00_PlaceHolderMain_PageContent__ControlWrapper_RichHtmlField"]/table'
 ```
 ]
 
@@ -272,7 +273,7 @@ xpath <- '//*[@id="ctl00_PlaceHolderMain_PageContent__ControlWrapper_RichHtmlFie
 ```{r warning=FALSE, message=FALSE}
 cases <- url1 %>%                # Scrape data
   read_html() %>%
-  html_nodes(xpath=xpath) %>%
+  html_nodes(xpath=xpath1) %>%
   html_table()
 cases <- cases[[8]]              # Select table number
 cases <- cases[-1,]              # Remove first row, which contains table headers
@@ -292,7 +293,7 @@ head(cases, 10)                  # View first five rows of data frame
 ```{r warning=FALSE, message=FALSE}
 deaths <- url2 %>%                 # Scrape data
   read_html() %>%
-  html_nodes(xpath=xpath) %>%
+  html_nodes(xpath=xpath2) %>%
   html_table()
 deaths <- deaths[[1]]              # Select table number
 deaths <- deaths[-1,]              # Remove first row, which contains table headers

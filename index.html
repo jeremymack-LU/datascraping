@@ -248,18 +248,19 @@ library(xml2)      # Package to work with XML files
 * Set urls for PA Department of Health web pages (cases and deaths)
 
 ```r
-url1 &lt;- 'https://www.health.pa.gov/topics/disease/coronavirus/Pages/Archives.aspx'
+url1 &lt;- 'https://www.health.pa.gov/topics/disease/coronavirus/Pages/June-Archive.aspx'
 url2 &lt;- 'https://www.health.pa.gov/topics/disease/coronavirus/Pages/Death-Data.aspx'
 ```
 ]
 
 --
 
-.tiny[
+.tiny3[
 * Set XPath for web page table(s)
 
 ```r
-xpath &lt;- '//*[@id="ctl00_PlaceHolderMain_PageContent__ControlWrapper_RichHtmlField"]/table'
+xpath1 &lt;- '//*[@id="ctl00_PlaceHolderMain_PageContent__ControlWrapper_RichHtmlField"]/span/table'
+xpath2 &lt;- '//*[@id="ctl00_PlaceHolderMain_PageContent__ControlWrapper_RichHtmlField"]/table'
 ```
 ]
 
@@ -271,7 +272,7 @@ xpath &lt;- '//*[@id="ctl00_PlaceHolderMain_PageContent__ControlWrapper_RichHtml
 ```r
 cases &lt;- url1 %&gt;%                # Scrape data
   read_html() %&gt;%
-  html_nodes(xpath=xpath) %&gt;%
+  html_nodes(xpath=xpath1) %&gt;%
   html_table()
 cases &lt;- cases[[8]]              # Select table number
 cases &lt;- cases[-1,]              # Remove first row, which contains table headers
@@ -306,7 +307,7 @@ head(cases, 10)                  # View first five rows of data frame
 ```r
 deaths &lt;- url2 %&gt;%                 # Scrape data
   read_html() %&gt;%
-  html_nodes(xpath=xpath) %&gt;%
+  html_nodes(xpath=xpath2) %&gt;%
   html_table()
 deaths &lt;- deaths[[1]]              # Select table number
 deaths &lt;- deaths[-1,]              # Remove first row, which contains table headers
@@ -492,8 +493,8 @@ raw_list
 .tiny2[
 
 ```
-[1] "/topics/Documents/Diseases%20and%20Conditions/COVID-19%20County%20Data/County%20Case%20Counts_6-25-2020.pdf"                     
-[2] "/topics/Documents/Diseases%20and%20Conditions/COVID-19%20Death%20Data/Death%20by%20County%20of%20Residence%20--%202020-06-25.pdf"
+[1] "/topics/Documents/Diseases%20and%20Conditions/COVID-19%20County%20Data/County%20Case%20Counts_7-7-2020.pdf"                      
+[2] "/topics/Documents/Diseases%20and%20Conditions/COVID-19%20Death%20Data/Death%20by%20County%20of%20Residence%20--%202020-07-07.pdf"
 ```
 ]
 
@@ -545,11 +546,11 @@ head(cases, 5)  # View first 5 rows of data frame
 
 ```
 ##      County Cases
-## 1     Adams   323
-## 2 Allegheny  2321
-## 3 Armstrong    70
-## 4    Beaver   637
-## 5   Bedford    72
+## 1     Adams   358
+## 2 Allegheny  3979
+## 3 Armstrong    79
+## 4    Beaver   770
+## 5   Bedford    90
 ```
 ]
 
@@ -580,11 +581,11 @@ head(deaths, 5)  # View first 5 rows of data frame
 
 ```
 ##      County Deaths
-## 1     Adams      3
+## 1     Adams      5
 ## 2 Allegheny      8
-## 3 Armstrong     29
-## 4    Beaver     33
-## 5   Bedford     17
+## 3 Armstrong     30
+## 4    Beaver     34
+## 5   Bedford     23
 ```
 ]
 
@@ -619,16 +620,16 @@ head(df, 10)                                           # View first 10 rows of d
 
 ```
 ##       County Cases Deaths
-## 1      Adams   323      3
-## 2  Allegheny  2321      8
-## 3  Armstrong    70     29
-## 4     Beaver   637     33
-## 5    Bedford    72     17
-## 6      Berks  4461     20
-## 7      Blair    69      1
-## 8   Bradford    51     17
-## 9      Bucks  5649     28
-## 10    Butler   280      4
+## 1      Adams   358      5
+## 2  Allegheny  3979      8
+## 3  Armstrong    79     30
+## 4     Beaver   770     34
+## 5    Bedford    90     23
+## 6      Berks  4606     20
+## 7      Blair    89      1
+## 8   Bradford    59     16
+## 9      Bucks  5948     29
+## 10    Butler   370      5
 ```
 
 ]
